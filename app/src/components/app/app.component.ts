@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, Routes, ROUTER_DIRECTIVES } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 
+import { AuthService } from '../../services/auth.service';
 import { IsRouteActive } from '../../pipes/is-route-active.pipe';
 import { RouteDefinitions, PublicRoutes } from '../../routes';
 
