@@ -1,0 +1,51 @@
+@import "../abstracts/variables";
+
+.header {
+	margin-bottom: 15px;
+}
+
+.header-container {
+	margin-top: 60px;
+}
+
+.header-title {
+	margin-bottom: 2px;
+	color: $page-background-color;
+
+	sup {
+		position: absolute;
+		margin-top: 4px;
+		margin-left: 5px;
+		font-size: 15px;
+		color: $page-brand-color-iota;
+	}
+}
+
+.header-subtitle {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.45;
+	color: $page-brand-color-iota;
+}
+
+.header-nav {
+	margin: 29px 0 29px 0;
+
+	& > li {
+		& > a {
+			border-color: $page-brand-color-iota;
+			color: $page-background-color;
+
+			&:hover:not(.active) {
+				border-color: $page-brand-color-theta;
+				background-color: $page-brand-color-eta;
+			}
+
+			&.active {
+				border-color: $page-brand-color-theta;
+				background-color: $page-brand-color-zeta;
+				color: $page-brand-color-iota;
+			}
+		}
+	}
+}
