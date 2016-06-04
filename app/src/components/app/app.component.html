@@ -7,8 +7,8 @@
 			</div>
 			<div class="col6">
 				<ul class="navmenu align-right header-nav">
-					<li *ngIf="!isUserAuthorized"><a [routerLink]="['/']" [class.active]="'/' | isRouteActive">Home</a></li>
-					<li *ngIf="!isUserAuthorized"><a [routerLink]="['/login']" [class.active]="'/login' | isRouteActive">Login</a></li>
+					<li *ngIf="!isUserAuthorized"><a [routerLink]="['/']" [class.active]="['/'] | isRouteActive">Home</a></li>
+					<li *ngIf="!isUserAuthorized"><a [routerLink]="['/login']" [class.active]="['/login'] | isRouteActive">Login</a></li>
 					<li *ngIf="isUserAuthorized"><a (click)="logout()" class="pointer">Logout</a></li>
 				</ul>
 			</div>
