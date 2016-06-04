@@ -15,7 +15,7 @@ This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gu
 
 The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: all JavaScript and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
 
-![Angular 2 Seed](http://matthias-schuetz.github.io/angular2-seed/angular2-seed.png "Angular 2 Seed")
+![Angular 2 Seed](http://matthias-schuetz.github.io/angular2-seed/angular2-seed.png?1 "Angular 2 Seed")
 
 ## Demo
 
