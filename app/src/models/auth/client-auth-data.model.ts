@@ -1,3 +1,3 @@
 export class ClientAuthDataModel {
-	public token: string;
+    public token: string;
 }

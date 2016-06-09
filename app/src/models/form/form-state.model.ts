@@ -1,10 +1,10 @@
 export class FormStateModel {
-	public submitting: boolean;
-	public submitError: boolean;
-	public submitErrorMessage: string;
+    public submitting: boolean;
+    public submitError: boolean;
+    public submitErrorMessage: string;
 
-	constructor() {
-		this.submitting = false;
-		this.submitError = false;
-	}
+    constructor() {
+        this.submitting = false;
+        this.submitError = false;
+    }
 }

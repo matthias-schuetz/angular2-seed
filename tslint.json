@@ -32,7 +32,6 @@
         "no-use-before-declare": true,
         "no-var-keyword": true,
         "no-var-requires": true,
-        "object-literal-sort-keys": true,
         "one-line": [
             true,
             "check-open-brace",
@@ -42,7 +41,7 @@
         ],
         "quotemark": [
             true,
-            "double"
+            "single"
         ],
         "semicolon": true,
         "switch-default": true,
@@ -52,6 +51,7 @@
             true,
             "check-format",
             "allow-leading-underscore",
+            "allow-pascal-case",
             "ban-keywords"
         ],
         "whitespace": [
