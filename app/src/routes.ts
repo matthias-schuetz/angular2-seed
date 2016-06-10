@@ -6,30 +6,30 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ErrorComponent } from './components/error/error.component';
 
 export const RouteDefinitions: Array<Route> = [
-	{
-		path: '/',
-		component: HomeComponent,
-	},
-	{
-		path: '/login',
-		component: LoginComponent
-	},
-	{
-		path: '/dashboard',
-		component: DashboardComponent
-	},
-	{
-		path: '/error',
-		component: ErrorComponent
-	},
-	{
-		path: '*',
-		component: ErrorComponent
-	}
+    {
+        path: '/',
+        component: HomeComponent,
+    },
+    {
+        path: '/login',
+        component: LoginComponent
+    },
+    {
+        path: '/dashboard',
+        component: DashboardComponent
+    },
+    {
+        path: '/error',
+        component: ErrorComponent
+    },
+    {
+        path: '*',
+        component: ErrorComponent
+    }
 ];
 
 export const PublicRoutes: Array<string> = [
-	'',
-	'/login',
-	'/error'
+    '',
+    '/login',
+    '/error'
 ];
