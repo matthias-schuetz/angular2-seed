@@ -14,20 +14,6 @@ export class AuthService {
         this._resetAuthData();
     }
 
-    private _authorizeUser(token: string) {
-        this._authData = {
-            token: token
-        };
-
-        sessionStorage.setItem('authData', JSON.stringify(this._authData));
-    }
-
-    private _resetAuthData() {
-        this._authData = {
-            token: null
-        };
-    }
-
     public isUserAuthorized(): boolean {
         let isAuthorized: boolean = this._authData.token ? true : false;
 
@@ -59,5 +45,19 @@ export class AuthService {
     public logout() {
         this._resetAuthData();
         sessionStorage.removeItem('authData');
+    }
+
+    private _authorizeUser(token: string) {
+        this._authData = {
+            token: token
+        };
+
+        sessionStorage.setItem('authData', JSON.stringify(this._authData));
+    }
+
+    private _resetAuthData() {
+        this._authData = {
+            token: null
+        };
     }
 }

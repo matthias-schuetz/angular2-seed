@@ -2,7 +2,7 @@
  * Gulp tasks
  *
  * The following tasks can be used to build and serve environments for development and production.
- * There are 5 main tasks which perform the actions respectively.
+ * There are 5 main tasks which perform the actions respectively (TSLint will perform a code check in all tasks).
  *
  * gulp                 Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle and TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
  * gulp start:dev       Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass during watch task)
@@ -22,6 +22,7 @@ var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
 var SystemJsBuilder = require('systemjs-builder');
 var ts = require('gulp-typescript');
+var tslint = require('gulp-tslint');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
@@ -61,6 +62,7 @@ var paths = {
 		cleanSrc: './app/src/vendor/node_modules/*',
 		sassDest: './app/styles',
 		typescriptDest: './app/src',
+		tslintDest: './app/src/**/*.ts',
 		vendorJsDest: './app/src/vendor/node_modules',
 
 		systemjs: {
@@ -210,6 +212,12 @@ gulp.task('dev:copy:vendor-js', function() {
 		.pipe(gulp.dest(paths.dev.vendorJsDest));
 });
 
+gulp.task('dev:tslint', function() {
+	return gulp.src(paths.dev.tslintDest)
+        .pipe(tslint())
+        .pipe(tslint.report('prose'));
+});
+
 /**
  * Production tasks
  */
@@ -309,11 +317,11 @@ gulp.task('watch-compile:dev', function() {
  * Main tasks
  */
 gulp.task('build:dev', function(done) {
-	runSequence('dev:clean', 'dev:compile:sass', 'dev:compile:typescript', 'dev:copy:vendor-js', 'dev:bundle:angular', done);
+	runSequence('dev:tslint', 'dev:clean', 'dev:compile:sass', 'dev:compile:typescript', 'dev:copy:vendor-js', 'dev:bundle:angular', done);
 });
 
 gulp.task('build:prod', function(done) {
-	runSequence('prod:clean', 'prod:compile:sass', 'dev:compile:typescript', 'prod:copy:html', 'prod:copy:static', 'prod:bundle:js', 'prod:bundle:vendor-css', done);
+	runSequence('dev:tslint', 'prod:clean', 'prod:compile:sass', 'dev:compile:typescript', 'prod:copy:html', 'prod:copy:static', 'prod:bundle:js', 'prod:bundle:vendor-css', done);
 });
 
 gulp.task('start:dev', function(done) {
