@@ -113,6 +113,7 @@ The included web server sets up the *app/* directory as *root* path so everythin
 ├ typings/
 ├ gulpfile.js
 ├ tsconfig.json
+├ tslint.json
 └ typings.json
 ```
 
