@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class ErrorComponent {
     constructor(private _router: Router, private _location: Location) {
         if (this._location.path() !== '/error') {
-            this._router.navigateByUrl('/error');
+            this._router.navigateByUrl('/error').catch(function(err){});
         }
     }
 }
