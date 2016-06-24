@@ -22,7 +22,7 @@ var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
 var SystemJsBuilder = require('systemjs-builder');
 var ts = require('gulp-typescript');
-let tslint = require('gulp-tslint');
+var tslint = require('gulp-tslint');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
