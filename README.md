@@ -1,7 +1,7 @@
 Angular 2 Seed
 ==============
 
-## Angular 2 TypeScript starter project [for RC1]
+## Angular 2 TypeScript starter project [for RC3]
 
 This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
@@ -19,7 +19,7 @@ The project was developed with an IDE in mind so the Gulp configuration works we
 
 ## Demo
 
-There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled project which uses SystemJS and Angular 2 RC1. The demo doesn't make use of the production feature of the seed. The production Gulp task will bundle all JS and CSS code into one file.
+There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled project which uses SystemJS and Angular 2 RC3. The demo doesn't make use of the production feature of the seed. The production Gulp task will bundle all JS and CSS code into one file.
 
 ## Usage
 
