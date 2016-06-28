@@ -1,39 +1,24 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, Routes, ROUTER_DIRECTIVES } from '@angular/router';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { IsRouteActive } from '../../pipes/is-route-active.pipe';
-import { RouteDefinitions, PublicRoutes } from '../../routes';
 
 @Component({
     selector: 'app',
     templateUrl: 'src/components/app/app.component.html',
     styleUrls: ['styles/components/app.css'],
-    providers: [AuthService],
+    providers: [],
     directives: [ROUTER_DIRECTIVES],
     pipes: [IsRouteActive]
 })
 
-@Routes(RouteDefinitions)
-
 export class AppComponent {
     public isUserAuthorized: boolean = false;
 
-    private _currentRoute: any;
-    private _isPublicPage: boolean;
-
-    constructor(private _router: Router, private _location: Location, private _authService: AuthService) {
-        this._router.changes.subscribe(() => {
-            this._currentRoute = this._location.path();
-            this._isPublicPage = PublicRoutes.indexOf(this._location.path()) !== -1;
+    constructor(private _router: Router, private _authService: AuthService) {
+        this._router.events.subscribe(() => {
             this.isUserAuthorized = this._authService.isUserAuthorized();
-
-            if (!this.isUserAuthorized && !this._isPublicPage) {
-                this._router.navigateByUrl('/login');
-            } else if (this.isUserAuthorized && (this._currentRoute === '' || this._currentRoute === 'login')) {
-                this._router.navigateByUrl('/dashboard');
-            }
         });
     }
 

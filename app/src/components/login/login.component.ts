@@ -10,7 +10,7 @@ import { LoginRequestModel } from '../../models/auth/login-request.model';
 @Component({
     selector: 'login',
     templateUrl: 'src/components/login/login.component.html',
-    providers: [AuthService],
+    providers: [],
     directives: [ROUTER_DIRECTIVES, FormInputTextDirective],
     pipes: []
 })
@@ -22,6 +22,10 @@ export class LoginComponent {
     private _loginRequest: LoginRequestModel;
 
     constructor(private _formBuilder: FormBuilder, private _router: Router, private _authService: AuthService) {
+        if (this._authService.isUserAuthorized()) {
+            this._router.navigate(['/dashboard']);
+        }
+
         this.formState = new FormStateModel();
 
         this.loginForm = this._formBuilder.group({

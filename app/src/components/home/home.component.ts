@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'home',
@@ -11,4 +13,9 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 })
 
 export class HomeComponent {
+    constructor(private _router: Router, private _authService: AuthService) {
+        if (this._authService.isUserAuthorized()) {
+            this._router.navigate(['/dashboard']);
+        }
+    }
 }

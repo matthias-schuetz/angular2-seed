@@ -7,26 +7,24 @@ import { ClientAuthDataModel } from '../models/auth/client-auth-data.model';
 @Injectable()
 
 export class AuthService {
-    private _authData: ClientAuthDataModel;
+    private _isAuthorized: boolean = false;
     private _sessionAuthData: any;
 
-    constructor() {
-        this._resetAuthData();
-    }
+    constructor() {}
 
     public isUserAuthorized(): boolean {
-        let isAuthorized: boolean = this._authData.token ? true : false;
+        this._isAuthorized = false;
 
-        if (!isAuthorized) {
+        if (!this._isAuthorized) {
             this._sessionAuthData = JSON.parse(sessionStorage.getItem('authData'));
 
             if (this._sessionAuthData && this._sessionAuthData.token) {
                 this._authorizeUser(this._sessionAuthData.token);
-                isAuthorized = true;
+                this._isAuthorized = true;
             }
         }
 
-        return isAuthorized;
+        return this._isAuthorized;
     }
 
     public login(loginRequest: LoginRequestModel): Observable<any> {
@@ -43,21 +41,17 @@ export class AuthService {
     }
 
     public logout() {
-        this._resetAuthData();
+        this._isAuthorized = false;
         sessionStorage.removeItem('authData');
     }
 
     private _authorizeUser(token: string) {
-        this._authData = {
+        let authData: ClientAuthDataModel = {
             token: token
         };
 
-        sessionStorage.setItem('authData', JSON.stringify(this._authData));
-    }
+        this._isAuthorized = true;
 
-    private _resetAuthData() {
-        this._authData = {
-            token: null
-        };
+        sessionStorage.setItem('authData', JSON.stringify(authData));
     }
 }

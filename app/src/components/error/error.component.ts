@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'error',
@@ -11,9 +9,4 @@ import { Router } from '@angular/router';
 })
 
 export class ErrorComponent {
-    constructor(private _router: Router, private _location: Location) {
-        if (this._location.path() !== '/error') {
-            this._router.navigateByUrl('/error').catch(function(err){});
-        }
-    }
 }

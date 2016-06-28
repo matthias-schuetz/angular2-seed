@@ -308,7 +308,7 @@ gulp.task('watch:dev', function() {
 });
 
 gulp.task('watch-compile:dev', function() {
-	gulp.watch(paths.typescriptSrc, ['dev:compile:typescript']);
+	gulp.watch(paths.typescriptSrc, ['dev:tslint', 'dev:compile:typescript']);
 	gulp.watch(paths.sassSrc, ['dev:compile:sass']);
 	gulp.watch(paths.dev.serverFileWatchers.watchCompile, ['reload:dev']);
 });
