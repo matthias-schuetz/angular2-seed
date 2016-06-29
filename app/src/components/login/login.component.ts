@@ -3,15 +3,15 @@ import { ControlGroup, FormBuilder, Validators } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
-import { FormInputTextDirective } from '../../directives/form-input-text/form-input-text.directive';
 import { FormStateModel } from '../../models/form/form-state.model';
 import { LoginRequestModel } from '../../models/auth/login-request.model';
+import { FormInputTextComponent } from '../+shared/index';
 
 @Component({
     selector: 'login',
     templateUrl: 'src/components/login/login.component.html',
     providers: [],
-    directives: [ROUTER_DIRECTIVES, FormInputTextDirective],
+    directives: [ROUTER_DIRECTIVES, FormInputTextComponent],
     pipes: []
 })
 
