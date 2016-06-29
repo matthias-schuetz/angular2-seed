@@ -3,21 +3,22 @@ import { ControlGroup, FormBuilder, Validators } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
-import { FormInputTextDirective } from '../../directives/form-input-text/form-input-text.directive';
 import { FormStateModel } from '../../models/form/form-state.model';
 import { LoginRequestModel } from '../../models/auth/login-request.model';
+import { FormInputTextComponent } from '../+shared/index';
+import { FocusableDirective } from '../../directives/focusable.directive';
 
 @Component({
     selector: 'login',
     templateUrl: 'src/components/login/login.component.html',
     providers: [],
-    directives: [ROUTER_DIRECTIVES, FormInputTextDirective],
+    directives: [ROUTER_DIRECTIVES, FormInputTextComponent, FocusableDirective],
     pipes: []
 })
 
 export class LoginComponent {
-    public formState: FormStateModel;
-    public loginForm: ControlGroup;
+    formState: FormStateModel;
+    loginForm: ControlGroup;
 
     private _loginRequest: LoginRequestModel;
 
@@ -38,7 +39,7 @@ export class LoginComponent {
         });
     }
 
-    public onLoginFormSubmit() {
+    onLoginFormSubmit() {
         this._loginRequest = new LoginRequestModel();
         this._loginRequest.username = this.loginForm.value.username;
         this._loginRequest.password = this.loginForm.value.password;

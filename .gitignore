@@ -2,5 +2,10 @@
 /node_modules/
 /typings/
 
+# Compiled files
+/app/src/**/*.js
+/app/styles/**/*.css
+!/app/styles/vendor/*.css
+
 # IDE Configurations
 .idea

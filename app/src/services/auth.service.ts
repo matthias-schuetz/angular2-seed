@@ -12,7 +12,7 @@ export class AuthService {
 
     constructor() {}
 
-    public isUserAuthorized(): boolean {
+    isUserAuthorized(): boolean {
         this._isAuthorized = false;
 
         if (!this._isAuthorized) {
@@ -27,7 +27,7 @@ export class AuthService {
         return this._isAuthorized;
     }
 
-    public login(loginRequest: LoginRequestModel): Observable<any> {
+    login(loginRequest: LoginRequestModel): Observable<any> {
         return Observable.create((subscriber) => {
             if (loginRequest.username.toLowerCase() === 'user' && loginRequest.password === '123') {
                 this._authorizeUser('json-web-token');
@@ -40,7 +40,7 @@ export class AuthService {
         });
     }
 
-    public logout() {
+    logout() {
         this._isAuthorized = false;
         sessionStorage.removeItem('authData');
     }
