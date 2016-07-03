@@ -3,8 +3,11 @@
   "version": false,
   "dependencies": {},
   "globalDependencies": {
-    "es6-collections": "registry:dt/es6-collections#0.5.1+20160316155526",
-    "es6-promise": "registry:dt/es6-promise#0.0.0+20160423074304",
-    "node": "registry:dt/node#4.0.0+20160423143914"
+      "angular-protractor": "github:DefinitelyTyped/DefinitelyTyped/angular-protractor/angular-protractor.d.ts#64b25f63f0ec821040a5d3e049a976865062ed9d",
+      "es6-collections": "registry:dt/es6-collections#0.5.1+20160316155526",
+      "es6-promise": "registry:dt/es6-promise#0.0.0+20160423074304",
+      "node": "registry:dt/node#4.0.0+20160423143914",
+      "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#26c98c8a9530c44f8c801ccc3b2057e2101187ee",
+      "selenium-webdriver": "github:DefinitelyTyped/DefinitelyTyped/selenium-webdriver/selenium-webdriver.d.ts#a83677ed13add14c2ab06c7325d182d0ba2784ea"
   }
 }

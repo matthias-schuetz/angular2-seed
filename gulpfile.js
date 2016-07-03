@@ -9,6 +9,7 @@
  * gulp build:dev       Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass)
  * gulp start:prod      Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass on start, no watch task, only for deployment)
  * gulp build:prod      Build prod environment (compiles TypeScript/Sass, processes index.html, bundles app and Angular2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+ * gulp test:e2e        Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
  *
  */
 var gulp = require('gulp');
@@ -17,14 +18,17 @@ var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var path = require('path');
 var preprocess = require('gulp-preprocess');
+var protractor = require('gulp-protractor').protractor;
 var replace = require('gulp-replace');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
 var SystemJsBuilder = require('systemjs-builder');
+var spawn = require('child_process').spawn;
 var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
+var webdriver;
 
 /**
  * Configuration
@@ -32,6 +36,7 @@ var watch = require('gulp-watch');
 var paths = {
 	sassSrc: './app/styles/**/*.scss',
 	typescriptSrc: ['./app/src/**/*.ts', './typings/**/*.ts'],
+	e2eTestsSrc: './app/src/**/*.spec.e2e.js',
 
 	vendorJsLibs: {
 		dev: [
@@ -314,6 +319,28 @@ gulp.task('watch-compile:dev', function() {
 });
 
 /**
+ * Test tasks
+ */
+gulp.task('tests:e2e:start-webdriver-phantomjs', function() {
+	webdriver = spawn('node', ['node_modules/phantomjs/bin/phantomjs', '--webdriver=4444'], { stdio: 'inherit' });
+});
+
+gulp.task('tests:e2e:stop-webdriver', function() {
+	webdriver.kill('SIGKILL');
+});
+
+gulp.task('tests:protractor', function() {
+	return gulp.src([paths.e2eTestsSrc])
+		.pipe(protractor({
+			configFile: 'protractor.conf.js'
+		}))
+		.on('error', function(err) {
+			console.log(err);
+			gulp.start('tests:e2e:stop-webdriver');
+		});
+});
+
+/**
  * Main tasks
  */
 gulp.task('build:dev', function(done) {
@@ -330,6 +357,10 @@ gulp.task('start:dev', function(done) {
 
 gulp.task('start:prod', function(done) {
 	runSequence('build:prod', 'serve:prod', done);
+});
+
+gulp.task('test:e2e', function(done) {
+	runSequence('tests:e2e:start-webdriver-phantomjs', 'tests:protractor', 'tests:e2e:stop-webdriver', done);
 });
 
 gulp.task('default', function(done) {

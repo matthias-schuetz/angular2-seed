@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
-import {IsRouteActive} from './pipes/is-route-active.pipe';
-import {AuthService} from './services/auth.service';
+import { IsRouteActive } from './pipes/is-route-active.pipe';
+import { AuthService } from './services/auth.service';
+import { PRECOMPILE_COMPONENTS } from './routes';
 
 @Component({
     selector: 'app',
@@ -9,7 +10,8 @@ import {AuthService} from './services/auth.service';
     styleUrls: ['styles/components/app.css'],
     providers: [],
     directives: [ROUTER_DIRECTIVES],
-    pipes: [IsRouteActive]
+    pipes: [IsRouteActive],
+    precompile: PRECOMPILE_COMPONENTS
 })
 
 export class AppComponent {

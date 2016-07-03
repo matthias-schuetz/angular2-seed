@@ -31,6 +31,13 @@ export const Routes: RouterConfig = [
     }
 ];
 
+export const PRECOMPILE_COMPONENTS = [
+    HomeComponent,
+    LoginComponent,
+    DashboardComponent,
+    ErrorComponent
+];
+
 export const APP_ROUTER_PROVIDERS = [
     provideRouter(Routes),
     AUTH_PROVIDERS

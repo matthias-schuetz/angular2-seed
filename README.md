@@ -1,7 +1,7 @@
 Angular 2 Seed
 ==============
 
-## Angular 2 TypeScript starter project [for RC3]
+## Angular 2 TypeScript starter project [for RC4]
 
 This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
@@ -19,7 +19,7 @@ The project was developed with an IDE in mind so the Gulp configuration works we
 
 ## Demo
 
-There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled project which uses SystemJS and Angular 2 RC3. The demo doesn't make use of the production feature of the seed. The production Gulp task will bundle all JS and CSS code into one file.
+There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled project which uses SystemJS and Angular 2 RC4. The demo doesn't make use of the production feature of the seed. The production Gulp task will bundle all JS and CSS code into one file.
 
 ## Usage
 
@@ -61,6 +61,12 @@ Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScrip
 $ gulp build:prod
 
 Build prod environment (compiles TypeScript/Sass, processes index.html, bundles app and Angular2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+```
+
+```html
+$ gulp test:e2e
+
+Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
 ```
 
 All Gulp tasks are also documented at the top of the *gulpfile.js*.
