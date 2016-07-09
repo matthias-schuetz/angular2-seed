@@ -41,15 +41,15 @@ var paths = {
 
 	vendorJsLibs: {
 		nodeModulesRoot: './node_modules/',
-			dev: [
-				{ path: './node_modules/systemjs/dist/system.src.js', singleFile: true },
-				{ path: './node_modules/systemjs/dist/system-polyfills.js', singleFile: true },
-				{ path: './node_modules/core-js/client/shim.min.js', singleFile: true },
-				{ path: './node_modules/zone.js/dist/zone.js', singleFile: true },
-				{ path: './node_modules/zone.js/dist/long-stack-trace-zone.js', singleFile: true },
-				{ path: './node_modules/reflect-metadata/Reflect.js', singleFile: true },
-				{ path: './node_modules/rxjs/**/*.js', singleFile: false }
-			],
+		dev: [
+			{ path: './node_modules/systemjs/dist/system.src.js', singleFile: true },
+			{ path: './node_modules/systemjs/dist/system-polyfills.js', singleFile: true },
+			{ path: './node_modules/core-js/client/shim.min.js', singleFile: true },
+			{ path: './node_modules/zone.js/dist/zone.js', singleFile: true },
+			{ path: './node_modules/zone.js/dist/long-stack-trace-zone.js', singleFile: true },
+			{ path: './node_modules/reflect-metadata/Reflect.js', singleFile: true },
+			{ path: './node_modules/rxjs/**/*.js', singleFile: false }
+		],
 		prod: {
 			bundle: [
 				'./node_modules/reflect-metadata/Reflect.js',
