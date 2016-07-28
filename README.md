@@ -23,7 +23,7 @@ There is an online demo [available here](http://matthiasschuetz.com/angular2-see
 
 ## Usage
 
-To use the Angular 2 seed, just clone this respository to your desktop. You need Node.js and npm to be installed. Afterwards, run the following commands to install all dependencies.
+To use the Angular 2 seed, just clone this respository to your desktop. You need Node.js and npm to be installed. You also need [Typings](https://github.com/typings/typings) to be installed globally. Afterwards, run the following commands to install all dependencies.
 
 ```html
 $ npm install typings -g
