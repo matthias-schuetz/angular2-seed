@@ -1,44 +1,28 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-import { AuthGuard, AUTH_PROVIDERS } from './common/auth.guard';
+import { AuthGuard } from './common/auth.guard';
 
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ErrorComponent } from './components/error/error.component';
-
-export const Routes: RouterConfig = [
+export const routing = RouterModule.forRoot([
     {
         path: '',
-        component: HomeComponent
+        pathMatch: 'full',
+        loadChildren: 'src/components/home/home.module'
     },
     {
         path: 'login',
-        component: LoginComponent
+        loadChildren: 'src/components/login/login.module'
     },
     {
         path: 'dashboard',
-        component: DashboardComponent,
+        loadChildren: 'src/components/dashboard/dashboard.module',
         canActivate: [AuthGuard]
     },
     {
         path: 'error',
-        component: ErrorComponent
+        loadChildren: 'src/components/error/error.module',
     },
     {
         path: '**',
         redirectTo: 'error'
     }
-];
-
-export const PRECOMPILE_COMPONENTS = [
-    HomeComponent,
-    LoginComponent,
-    DashboardComponent,
-    ErrorComponent
-];
-
-export const APP_ROUTER_PROVIDERS = [
-    provideRouter(Routes),
-    AUTH_PROVIDERS
-];
+]);

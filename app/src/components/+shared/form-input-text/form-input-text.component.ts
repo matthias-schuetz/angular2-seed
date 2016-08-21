@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Control } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'form-input-text',
@@ -9,5 +9,5 @@ import { Control } from '@angular/common';
 export class FormInputTextComponent {
     @Input() inputId: string;
     @Input() inputType: string;
-    @Input() inputControl: Control;
+    @Input() inputControl: FormControl;
 }

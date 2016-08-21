@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'home',
     templateUrl: 'src/components/home/home.component.html',
-    styleUrls: ['styles/components/home.css'],
-    providers: [],
-    directives: [ROUTER_DIRECTIVES],
-    pipes: []
+    styleUrls: ['styles/components/home.css']
 })
 
 export class HomeComponent {

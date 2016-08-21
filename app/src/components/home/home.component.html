@@ -1,20 +1,23 @@
 <div class="middle">
 	<div class="row">
 		<div class="col8">
-			<h2>Sample app &middot; <span class="clr-delta">Angular 2 RC4</span></h2>
-			<p>This is an example app based on Angular 2 RC4. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:</p>
+			<h2>Sample app &middot; <span class="clr-delta">Angular 2 RC5</span></h2>
+			<p>This is an example app based on Angular 2 RC5. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:</p>
 			<ul>
 				<li>a routing concept (separate route configuration file)</li>
+				<li>a lazy loading concept</li>
 				<li>login and dashboard view components (authorized/public routes)</li>
 				<li>error page handling</li>
 				<li>a directive (form inputs)</li>
 				<li>a service (authorization)</li>
 				<li>a pipe (determine the active route)</li>
-				<li>uses es6-shim, Reflect, Rx.js and Zone.js</li>
+				<li>uses core-js, Reflect, Rx.js and Zone.js</li>
 			</ul>
-			<p>The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the <strong>Angular 2 bundle</strong> and copying polyfills so you don't need to link to modules from <em>node_modules</em> inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: all JavaScript and CSS code will be concatenated into a single file. The <em>index.html</em> contains a minimal pre-processing condition for production.</p>
+			<p>The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the <strong>Angular 2 bundle</strong> and copying polyfills so you don't need to link to modules from <em>node_modules</em> inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: JavaScript code gets minified and all JavaScript vendor libraries and CSS code will be concatenated into a single file. The <em>index.html</em> contains a minimal pre-processing condition for production.</p>
+			<p>Since Angular 2 RC 5 there is support for <strong>modules</strong>. This seed makes use of modules and implements lazy loading for separate parts of the app: every view component (except the <em>error</em> view) is loaded on demand. There is a shared component called <em>form-input-text</em> which is also built up as module so it gets loaded only in those views where it's needed (in this seed, it's located in the <em>login</em> view). Additionally, there's a <em>SharedModule</em> which contains classes for all directives and pipes of the app: they're always loaded, no matter what's the entrypoint of the user. The concept of the <em>SharedModule</em> is also described <a href="https://angular.io/docs/ts/latest/guide/ngmodule.html">in the documentation</a>. Keep in mind that every component you put in there will always be loaded globally. If you want to lazy load components in different views, create a module for them and import that module.</p>
 			<p>Head over to the <a [routerLink]="['/login']">login page</a> to see the components, directives and services in action. There is a sample dashboard view which represents an area for authorized users.</p>
 			<p><strong>Browser support:</strong> all major browsers including Internet Explorer 11+, Edge, Firefox, Chrome, Opera and Safari</p>
+			<p><a href="https://github.com/matthias-schuetz/angular2-seed/" class="button" _ngcontent-uqg-3="">Download on GitHub</a></p>
 		</div>
 		<div class="col4">
 			<h2>Structure</h2>
@@ -30,6 +33,7 @@
 				<li><span class="icon">&#x0251C;</span><span class="clr-delta">node_modules/</span></li>
 				<li><span class="icon">&#x0251C;</span><span class="clr-delta">typings/</span></li>
 				<li><span class="icon">&#x0251C;</span>gulpfile.js</li>
+				<li><span class="icon">&#x0251C;</span>protractor.conf.js</li>
 				<li><span class="icon">&#x0251C;</span>tsconfig.json</li>
 				<li><span class="icon">&#x0251C;</span>tslint.json</li>
 				<li><span class="icon">&#x02514;</span>typings.json</li>

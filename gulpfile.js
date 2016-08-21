@@ -8,7 +8,7 @@
  * gulp start:dev       Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass during watch task)
  * gulp build:dev       Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass)
  * gulp start:prod      Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass on start, no watch task, only for deployment)
- * gulp build:prod      Build prod environment (compiles TypeScript/Sass, processes index.html, bundles app and Angular2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+ * gulp build:prod      Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
  * gulp test:e2e        Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
  *
  */
@@ -20,6 +20,7 @@ var eventStream = require('event-stream');
 var path = require('path');
 var preprocess = require('gulp-preprocess');
 var protractor = require('gulp-protractor').protractor;
+var pump = require('pump');
 var replace = require('gulp-replace');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
@@ -55,7 +56,8 @@ var paths = {
 				'./node_modules/reflect-metadata/Reflect.js',
 				'./node_modules/core-js/client/shim.min.js',
 				'./node_modules/zone.js/dist/zone.min.js',
-				'./node_modules/zone.js/dist/long-stack-trace-zone.min.js'
+				'./node_modules/zone.js/dist/long-stack-trace-zone.min.js',
+				'./node_modules/rxjs/bundles/Rx.min.js'
 			],
 			copy: [
 				'./node_modules/systemjs/dist/system.js',
@@ -76,6 +78,7 @@ var paths = {
 				{ path: './app/src/vendor/angular2.bundles/common.js', outFile: 'common/index.js' },
 				{ path: './app/src/vendor/angular2.bundles/compiler.js', outFile: 'compiler/index.js' },
 				{ path: './app/src/vendor/angular2.bundles/core.js', outFile: 'core/index.js' },
+				{ path: './app/src/vendor/angular2.bundles/forms.js', outFile: 'forms/index.js' },
 				{ path: './app/src/vendor/angular2.bundles/http.js', outFile: 'http/index.js' },
 				{ path: './app/src/vendor/angular2.bundles/platform-browser.js', outFile: 'platform-browser/index.js' },
 				{ path: './app/src/vendor/angular2.bundles/platform-browser-dynamic.js', outFile: 'platform-browser-dynamic/index.js' },
@@ -108,6 +111,11 @@ var paths = {
 		htmlDest: './dist',
 
 		staticBase: './app',
+		staticJsSrc: [
+			'./app/src/**/*.js',
+			'!./app/src/vendor/**/*.*',
+			'!./app/src/**/*.e2e.js'
+		],
 		staticSrc: [
 			'./app/assets/**/*',
 			'./app/src/**/*.html'
@@ -121,8 +129,9 @@ var paths = {
 		vendorCssDest: './dist/styles',
 
 		systemjs: {
-			appBundleSrc: './app/src/bootstrap.js',
-			appBundleDest: 'app.min.js'
+			angularBundleDest: 'angular2.bundle.js',
+			appBundleSrc: './app/src/vendor/angular2.bundle.dist.js',
+			appBundleDest: 'vendor.min.js'
 		},
 
 		serverRoot: './dist',
@@ -151,6 +160,10 @@ var systemjsConfig = {
 				defaultExtension: 'js'
 			},
 			'@angular/core': {
+				main: 'index.js',
+				defaultExtension: 'js'
+			},
+			'@angular/forms': {
 				main: 'index.js',
 				defaultExtension: 'js'
 			},
@@ -252,14 +265,20 @@ gulp.task('dev:tslint', function() {
 /**
  * Production tasks
  */
-gulp.task('prod:bundle:js', function(done) {
+gulp.task('prod:bundle:vendor-css', function() {
+	return gulp.src(paths.prod.vendorCssSrc)
+		.pipe(concat(paths.prod.vendorCssOutFile))
+		.pipe(gulp.dest(paths.prod.vendorCssDest));
+});
+
+gulp.task('prod:bundle:vendor-js', function(done) {
 	var systemjs = new SystemJsBuilder(systemjsConfig);
-	var appBundleDest = path.join(paths.prod.jsDest, paths.prod.systemjs.appBundleDest);
+	var angularBundleDest = path.join(paths.prod.jsDest, paths.prod.systemjs.angularBundleDest);
 
 	systemjs
-		.buildStatic(
+		.bundle(
 			paths.prod.systemjs.appBundleSrc,
-			appBundleDest,
+			angularBundleDest,
 			{
 				normalize: true,
 				sourceMaps: false,
@@ -267,16 +286,26 @@ gulp.task('prod:bundle:js', function(done) {
 				mangle: true
 			})
 		.then(function() {
-			paths.vendorJsLibs.prod.bundle.push(appBundleDest);
+			gulp.src([angularBundleDest])
+				.pipe(replace(/\/index\.js/g, ''))
+				.pipe(replace(/\.js"/g, '"'))
+				.pipe(gulp.dest(paths.prod.jsDest))
+				.on('finish', function() {
+					paths.vendorJsLibs.prod.bundle.push(angularBundleDest);
 
-			gulp.src(paths.vendorJsLibs.prod.bundle)
-				.pipe(concat(paths.prod.systemjs.appBundleDest))
-				.pipe(gulp.dest(paths.prod.jsDest));
+					gulp.src(paths.vendorJsLibs.prod.bundle)
+						.pipe(concat(paths.prod.systemjs.appBundleDest))
+						.pipe(gulp.dest(paths.prod.jsDest))
+						.on('finish', function() {
+							gulp.src(angularBundleDest, { read: false })
+								.pipe(clean());
 
-			gulp.src(paths.vendorJsLibs.prod.copy)
-				.pipe(gulp.dest(paths.prod.jsDest));
+							gulp.src(paths.vendorJsLibs.prod.copy)
+								.pipe(gulp.dest(paths.prod.jsDest));
 
-			done();
+							done();
+						});
+				});
 		});
 });
 
@@ -291,10 +320,12 @@ gulp.task('prod:compile:sass', function() {
 		.pipe(gulp.dest(paths.prod.sassDest));
 });
 
-gulp.task('prod:copy:html', function() {
-	return gulp.src(paths.prod.htmlSrc)
-		.pipe(preprocess())
-		.pipe(gulp.dest(paths.prod.htmlDest));
+gulp.task('prod:copy:js', function(done) {
+	pump([
+		gulp.src(paths.prod.staticJsSrc, { base: paths.prod.staticBase }),
+		uglify(),
+		gulp.dest(paths.prod.staticDest)
+	], done);
 });
 
 gulp.task('prod:copy:static', function() {
@@ -302,10 +333,10 @@ gulp.task('prod:copy:static', function() {
 		.pipe(gulp.dest(paths.prod.staticDest));
 });
 
-gulp.task('prod:bundle:vendor-css', function() {
-	return gulp.src(paths.prod.vendorCssSrc)
-		.pipe(concat(paths.prod.vendorCssOutFile))
-		.pipe(gulp.dest(paths.prod.vendorCssDest));
+gulp.task('prod:preprocess:html', function() {
+	return gulp.src(paths.prod.htmlSrc)
+		.pipe(preprocess())
+		.pipe(gulp.dest(paths.prod.htmlDest));
 });
 
 /**
@@ -374,7 +405,7 @@ gulp.task('build:dev', function(done) {
 });
 
 gulp.task('build:prod', function(done) {
-	runSequence('dev:tslint', 'prod:clean', 'prod:compile:sass', 'dev:compile:typescript', 'prod:copy:html', 'prod:copy:static', 'prod:bundle:js', 'prod:bundle:vendor-css', done);
+	runSequence('dev:tslint', 'prod:clean', 'prod:compile:sass', 'dev:compile:typescript', 'prod:preprocess:html', 'prod:copy:static', 'prod:copy:js', 'prod:bundle:vendor-js', 'prod:bundle:vendor-css', done);
 });
 
 gulp.task('start:dev', function(done) {

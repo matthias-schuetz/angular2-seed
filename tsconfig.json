@@ -7,11 +7,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
-    "noImplicitAny": false
+    "noImplicitAny": true
   },
   "compileOnSave": true,
   "exclude": [
     "node_modules",
-    "app/src/vendor"
+    "app/src/vendor/node_modules"
   ]
 }

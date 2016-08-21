@@ -1,11 +1,12 @@
 Angular 2 Seed
 ==============
 
-## Angular 2 TypeScript starter project [for RC4]
+## Angular 2 TypeScript starter project [for RC5]
 
 This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
  - a routing concept (separate route configuration file)
+ - a lazy loading concept
  - login and dashboard view components (authorized/public routes)
  - error page handling
  - a directive (form inputs)
@@ -13,13 +14,15 @@ This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gu
  - a pipe (determine the active route)
  - uses es6-shim, Reflect, Rx.js and Zone.js
 
-The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: all JavaScript and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
+The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: JavaScript code gets minified and all JavaScript vendor libraries and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
+
+Since Angular 2 RC 5 there is support for modules. This seed makes use of modules and implements lazy loading for separate parts of the app: every view component (except the *error* view) is loaded on demand. There is a shared component called *form-input-text* which is also built up as module so it gets loaded only in those views where it's needed (in this seed, it's located in the login view). Additionally, there's a *SharedModule* which contains classes for all directives and pipes of the app: they're always loaded, no matter what's the entrypoint of the user. Keep in mind that every component you put in the *SharedModule* will always be loaded globally. If you want to lazy load components in different views, create a module for them and import that module.
 
 ![Angular 2 Seed](http://matthias-schuetz.github.io/angular2-seed/angular2-seed.png?1 "Angular 2 Seed")
 
 ## Demo
 
-There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled project which uses SystemJS and Angular 2 RC4. The demo doesn't make use of the production feature of the seed. The production Gulp task will bundle all JS and CSS code into one file.
+There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled production version of the project which uses SystemJS and Angular 2 RC5.
 
 ## Usage
 
@@ -60,7 +63,7 @@ Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScrip
 ```html
 $ gulp build:prod
 
-Build prod environment (compiles TypeScript/Sass, processes index.html, bundles app and Angular2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
 ```
 
 ```html
@@ -118,6 +121,7 @@ The included web server sets up the *app/* directory as *root* path so everythin
 ├ node_modules/
 ├ typings/
 ├ gulpfile.js
+├ protractor.conf.js
 ├ tsconfig.json
 ├ tslint.json
 └ typings.json

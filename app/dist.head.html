@@ -2,4 +2,18 @@
 <link rel="stylesheet" href="styles/app.css" />
 
 <script src="src/system.js"></script>
-<script src="src/app.min.js"></script>
+<script src="src/vendor.min.js"></script>
+<script>
+    System.config({
+        baseURL: './',
+        packages: {
+            'src': {
+                defaultExtension: 'js'
+            }
+        }
+    });
+
+    System.import('./src/bootstrap.js').catch(function(err) {
+        console.error(err);
+    });
+</script>

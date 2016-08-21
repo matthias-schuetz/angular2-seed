@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
-import { ControlGroup, FormBuilder, Validators } from '@angular/common';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { Validators } from '@angular/common';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { FormStateModel } from '../../models/form/form-state.model';
 import { LoginRequestModel } from '../../models/auth/login-request.model';
-import { FormInputTextComponent } from '../+shared/index';
-import { FocusableDirective } from '../../directives/focusable.directive';
 
 @Component({
     selector: 'login',
-    templateUrl: 'src/components/login/login.component.html',
-    providers: [],
-    directives: [ROUTER_DIRECTIVES, FormInputTextComponent, FocusableDirective],
-    pipes: []
+    templateUrl: 'src/components/login/login.component.html'
 })
 
 export class LoginComponent {
     formState: FormStateModel;
-    loginForm: ControlGroup;
+    loginForm: FormGroup;
 
     private _loginRequest: LoginRequestModel;
 
