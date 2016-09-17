@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../+shared/shared.module';
+import { SharedModule } from '../_shared/shared.module';
 import { ErrorComponent } from './error.component';
 import { routing } from './error.routing';
 

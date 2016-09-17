@@ -8,20 +8,10 @@ exports.config = {
     // directConnect: true,
 
     /*
-     * Set seleniumAddress to phantomJS Ghost instance
-     * Usage: node node_modules/phantomjs/bin/phantomjs --webdriver=4444
-     */
-    seleniumAddress: 'http://localhost:4444',
-
-    /*
      * Set seleniumAddress to webdriver-manager default when using other browsers
      * Usage: webdriver-manager start
      */
-    // seleniumAddress: 'http://localhost:4444/wd/hub',
-
-    specs: [
-        './app/src/**/*.spec.e2e.js'
-    ],
+    seleniumAddress: 'http://localhost:4444/wd/hub',
 
     framework: 'jasmine',
 
@@ -30,11 +20,7 @@ exports.config = {
     },
 
     capabilities: {
-        // browserName: 'chrome'
-
-        'browserName': 'phantomjs',
-        'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs',
-        'phantomjs.cli.args': ['--logfile=PATH', '--loglevel=DEBUG']
+        browserName: 'chrome'
     },
 
     onPrepare: function() {

@@ -4,12 +4,14 @@
  * The following tasks can be used to build and serve environments for development and production.
  * There are 5 main tasks which perform the actions respectively (TSLint will perform a code check in all tasks).
  *
- * gulp                 Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle and TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
- * gulp start:dev       Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass during watch task)
- * gulp build:dev       Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass)
- * gulp start:prod      Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass on start, no watch task, only for deployment)
- * gulp build:prod      Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
- * gulp test:e2e        Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
+ * gulp                 	Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles and TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
+ * gulp start:dev       	Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles, compiles TypeScript/Sass during watch task)
+ * gulp start:dev:separate	Same as 'start:dev' but copies all app files into a separate dev directory (JS/CSS files will also be compiled into that directory only)
+ * gulp build:dev       	Build dev environment (copies Angular 2 UMD bundles files and compiles TypeScript/Sass)
+ * gulp build:dev:separate	Same as 'build:dev' but copies all app files into a separate dev directory (JS/CSS files will also be compiled into that directory only)
+ * gulp start:prod      	Build/serve prod environment on port 8081 (copies Angular 2 UMD bundles and TypeScript/Sass on start, no watch task, only for deployment)
+ * gulp build:prod      	Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+ * gulp test:e2e       		Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
  *
  */
 var gulp = require('gulp');
@@ -30,6 +32,8 @@ var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
+
+var useSeparateDev = false;
 var webdriver;
 
 /**
@@ -43,6 +47,14 @@ var paths = {
 	vendorJsLibs: {
 		nodeModulesRoot: './node_modules/',
 		dev: [
+			{ path: './node_modules/@angular/common/bundles/common.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/compiler/bundles/compiler.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/core/bundles/core.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/forms/bundles/forms.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/http/bundles/http.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/platform-browser/bundles/platform-browser.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js', singleFile: true, dest: '@angular' },
+			{ path: './node_modules/@angular/router/bundles/router.umd.js', singleFile: true, dest: '@angular' },
 			{ path: './node_modules/systemjs/dist/system.src.js', singleFile: true },
 			{ path: './node_modules/systemjs/dist/system-polyfills.js', singleFile: true },
 			{ path: './node_modules/core-js/client/shim.min.js', singleFile: true },
@@ -56,12 +68,19 @@ var paths = {
 				'./node_modules/reflect-metadata/Reflect.js',
 				'./node_modules/core-js/client/shim.min.js',
 				'./node_modules/zone.js/dist/zone.min.js',
-				'./node_modules/zone.js/dist/long-stack-trace-zone.min.js',
-				'./node_modules/rxjs/bundles/Rx.min.js'
+				'./node_modules/zone.js/dist/long-stack-trace-zone.min.js'
 			],
 			copy: [
-				'./node_modules/systemjs/dist/system.js',
-				'./node_modules/systemjs/dist/system-polyfills.js'
+				{ path: './node_modules/@angular/common/bundles/common.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/compiler/bundles/compiler.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/core/bundles/core.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/forms/bundles/forms.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/http/bundles/http.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/platform-browser/bundles/platform-browser.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/@angular/router/bundles/router.umd.min.js', dest: '@angular' },
+				{ path: './node_modules/systemjs/dist/system.js' },
+				{ path: './node_modules/systemjs/dist/system-polyfills.js' }
 			]
 		}
 	},
@@ -73,18 +92,19 @@ var paths = {
 		tslintDest: './app/src/**/*.ts',
 		vendorJsDest: './app/src/vendor/node_modules',
 
-		systemjs: {
-			angularBundleSrc: [
-				{ path: './app/src/vendor/angular2.bundles/common.js', outFile: 'common/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/compiler.js', outFile: 'compiler/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/core.js', outFile: 'core/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/forms.js', outFile: 'forms/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/http.js', outFile: 'http/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/platform-browser.js', outFile: 'platform-browser/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/platform-browser-dynamic.js', outFile: 'platform-browser-dynamic/index.js' },
-				{ path: './app/src/vendor/angular2.bundles/router.js', outFile: 'router/index.js' }
+		separateDest: {
+			appDest: './app-dev',
+			sassDest: './app-dev/styles',
+			typescriptDest: './app-dev/src',
+			staticSrc: [
+				'./app/assets/*',
+				'./app/**/*.css',
+				'./app/**/*.html',
+				'./app/*.js*',
+				'./app/src/vendor/**/*.*',
 			],
-			angularBundleDest: './app/src/vendor/node_modules/@angular'
+			serverRoot: './app-dev',
+			serverFallback: './app-dev/index.html'
 		},
 
 		serverRoot: './app',
@@ -98,6 +118,7 @@ var paths = {
 			],
 			watchCompile: [
 				'./app/assets/*',
+				'./app/*.js*',
 				'./app/**/*.html'
 			]
 		}
@@ -105,7 +126,8 @@ var paths = {
 	prod: {
 		cleanSrc: './dist/*',
 		sassDest: './dist/styles',
-		jsDest: './dist/src',
+		vendorJsDest: './dist/src/vendor',
+		vendorJsNodeModulesDest: './dist/src/vendor/node_modules',
 
 		htmlSrc: './app/index.html',
 		htmlDest: './dist',
@@ -129,9 +151,18 @@ var paths = {
 		vendorCssDest: './dist/styles',
 
 		systemjs: {
-			angularBundleDest: 'angular2.bundle.js',
-			appBundleSrc: './app/src/vendor/angular2.bundle.dist.js',
-			appBundleDest: 'vendor.min.js'
+			rxjsBundleSrc: [
+				'./node_modules/rxjs/add/**/*.js',
+				'./node_modules/rxjs/observable/**/*.js',
+				'./node_modules/rxjs/operator/**/*.js',
+				'./node_modules/rxjs/scheduler/**/*.js',
+				'./node_modules/rxjs/symbol/**/*.js',
+				'./node_modules/rxjs/testing/**/*.js',
+				'./node_modules/rxjs/util/**/*.js',
+				'./node_modules/rxjs/*.js'
+			].join(' + '),
+			rxjsBundleDest: './dist/src/vendor/node_modules/rxjs.min.js',
+			vendorBundleDest: 'vendor.min.js'
 		},
 
 		serverRoot: './dist',
@@ -140,120 +171,71 @@ var paths = {
 };
 
 var systemjsConfig = {
-		baseURL: './',
-		defaultJSExtensions: true,
-		paths: {
-			'*': 'node_modules/*',
-			'app/*': 'app/*'
-		},
-		map: {
-			'@angular': './@angular',
-			'rxjs': './rxjs'
-		},
-		packages: {
-			'@angular/common': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/compiler': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/core': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/forms': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/http': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/platform-browser': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/platform-browser-dynamic': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'@angular/router': {
-				main: 'index.js',
-				defaultExtension: 'js'
-			},
-			'rxjs': {
-				defaultExtension: 'js'
-			}
+	baseURL: './',
+	defaultJSExtensions: true,
+	paths: {
+		'*': 'node_modules/*',
+		'app/*': 'app/*'
+	},
+	map: {
+		'rxjs': './rxjs'
+	},
+	packages: {
+		'rxjs': {
+			defaultExtension: 'js'
 		}
-	};
+	}
+};
 
 /**
  * Development tasks
  */
-gulp.task('dev:bundle:angular', function(done) {
-	var angular2ModuleBundleTasks = [];
-
-	paths.dev.systemjs.angularBundleSrc.forEach(function(module) {
-		gulp.task('dev:bundle:angular:' + module.outFile, function(done) {
-			var systemjs = new SystemJsBuilder(systemjsConfig);
-
-			systemjs
-				.bundle(
-					module.path,
-					paths.dev.systemjs.angularBundleDest + '/' + module.outFile,
-					{
-						normalize: true,
-						sourceMaps: false,
-						minify: false,
-						mangle: false
-					})
-				.then(function() {
-					gulp
-						.src([paths.dev.systemjs.angularBundleDest + '/' + module.outFile])
-						.pipe(gulp.dest(paths.dev.systemjs.angularBundleDest + '/' + module.outFile.split('/')[0]));
-
-					done();
-				});
-		});
-
-		angular2ModuleBundleTasks.push('dev:bundle:angular:' + module.outFile);
-	});
-
-	runSequence(angular2ModuleBundleTasks, done);
-});
-
 gulp.task('dev:clean', function() {
 	return gulp.src(paths.dev.cleanSrc, { read: false })
 		.pipe(clean());
 });
 
-gulp.task('dev:compile:sass', function() {
+gulp.task('dev:clean:separate', function() {
+	return gulp.src(paths.dev.separateDest.appDest, { read: false })
+		.pipe(clean());
+});
+
+gulp.task('dev:compile:sass', function(done) {
 	return gulp.src(paths.sassSrc)
 		.pipe(sass())
-		.pipe(gulp.dest(paths.dev.sassDest))
+		.pipe(gulp.dest(useSeparateDev ? paths.dev.separateDest.sassDest : paths.dev.sassDest))
 		.pipe(connect.reload());
 });
 
 gulp.task('dev:compile:typescript', function() {
 	var tsProject = ts.createProject('./tsconfig.json');
-
 	var tsResult = gulp.src(paths.typescriptSrc)
 		.pipe(ts(tsProject));
 
 	return tsResult.js
-		.pipe(gulp.dest(paths.dev.typescriptDest))
+		.pipe(gulp.dest(useSeparateDev ? paths.dev.separateDest.typescriptDest : paths.dev.typescriptDest))
 		.pipe(connect.reload());
 });
 
 gulp.task('dev:copy:vendor-js', function() {
 	var streams = paths.vendorJsLibs.dev.map(function(ref) {
 		return gulp.src(ref.path, { base: ref.singleFile ? '' : paths.vendorJsLibs.nodeModulesRoot })
-			.pipe(gulp.dest(paths.dev.vendorJsDest));
+			.pipe(gulp.dest(ref.dest ? path.join(paths.dev.vendorJsDest, ref.dest) : paths.dev.vendorJsDest));
 	});
 
 	return eventStream.concat.apply(eventStream, streams);
+});
+
+gulp.task('dev:copy:static:separate', function(done) {
+	gulp.src(paths.dev.separateDest.staticSrc, { base: './app' })
+		.pipe(gulp.dest(paths.dev.separateDest.appDest));
+
+	setTimeout(function() {
+		gulp.src(paths.dev.separateDest.serverRoot)
+			.pipe(connect.reload());
+		
+		done();
+	}, 1000);
 });
 
 gulp.task('dev:tslint', function() {
@@ -273,35 +255,29 @@ gulp.task('prod:bundle:vendor-css', function() {
 
 gulp.task('prod:bundle:vendor-js', function(done) {
 	var systemjs = new SystemJsBuilder(systemjsConfig);
-	var angularBundleDest = path.join(paths.prod.jsDest, paths.prod.systemjs.angularBundleDest);
 
 	systemjs
-		.bundle(
-			paths.prod.systemjs.appBundleSrc,
-			angularBundleDest,
-			{
-				normalize: true,
-				sourceMaps: false,
-				minify: true,
-				mangle: true
-			})
+		.bundle(paths.prod.systemjs.rxjsBundleSrc, paths.prod.systemjs.rxjsBundleDest, {
+			sourceMaps: false,
+            minify: true,
+            mangle: true
+        })
 		.then(function() {
-			gulp.src([angularBundleDest])
+			gulp.src([paths.prod.systemjs.rxjsBundleDest])
 				.pipe(replace(/\/index\.js/g, ''))
 				.pipe(replace(/\.js"/g, '"'))
-				.pipe(gulp.dest(paths.prod.jsDest))
+				.pipe(gulp.dest(paths.prod.vendorJsNodeModulesDest))
 				.on('finish', function() {
-					paths.vendorJsLibs.prod.bundle.push(angularBundleDest);
-
 					gulp.src(paths.vendorJsLibs.prod.bundle)
-						.pipe(concat(paths.prod.systemjs.appBundleDest))
-						.pipe(gulp.dest(paths.prod.jsDest))
+						.pipe(concat(paths.prod.systemjs.vendorBundleDest))
+						.pipe(gulp.dest(paths.prod.vendorJsDest))
 						.on('finish', function() {
-							gulp.src(angularBundleDest, { read: false })
-								.pipe(clean());
+							var streams = paths.vendorJsLibs.prod.copy.map(function(ref) {
+								return gulp.src(ref.path)
+									.pipe(gulp.dest(ref.dest ? path.join(paths.prod.vendorJsNodeModulesDest, ref.dest) : paths.prod.vendorJsNodeModulesDest));
+							});
 
-							gulp.src(paths.vendorJsLibs.prod.copy)
-								.pipe(gulp.dest(paths.prod.jsDest));
+							eventStream.concat.apply(eventStream, streams);
 
 							done();
 						});
@@ -356,6 +332,15 @@ gulp.task('serve:dev', function() {
 	});
 });
 
+gulp.task('serve:dev:separate', function() {
+	connect.server({
+		port: '8080',
+		root: paths.dev.separateDest.serverRoot,
+		fallback: paths.dev.separateDest.serverFallback,
+		livereload: true
+	});
+});
+
 gulp.task('serve:prod', function() {
 	connect.server({
 		port: '8081',
@@ -375,25 +360,22 @@ gulp.task('watch-compile:dev', function() {
 	gulp.watch(paths.dev.serverFileWatchers.watchCompile, ['reload:dev']);
 });
 
+gulp.task('watch-compile:dev:separate-dev', function() {
+	gulp.watch(paths.typescriptSrc, ['dev:tslint', 'dev:compile:typescript']);
+	gulp.watch(paths.sassSrc, ['dev:compile:sass']);
+	gulp.watch(paths.dev.serverFileWatchers.watchCompile, ['dev:copy:static:separate']);
+});
+
 /**
  * Test tasks
  */
-gulp.task('tests:e2e:start-webdriver-phantomjs', function() {
-	webdriver = spawn('node', ['node_modules/phantomjs/bin/phantomjs', '--webdriver=4444'], { stdio: 'inherit' });
-});
-
-gulp.task('tests:e2e:stop-webdriver', function() {
-	webdriver.kill('SIGKILL');
-});
-
-gulp.task('tests:protractor', function() {
+gulp.task('tests:chrome', function() {
 	return gulp.src([paths.e2eTestsSrc])
 		.pipe(protractor({
 			configFile: 'protractor.conf.js'
 		}))
 		.on('error', function(err) {
 			console.log(err);
-			gulp.start('tests:e2e:stop-webdriver');
 		});
 });
 
@@ -401,7 +383,11 @@ gulp.task('tests:protractor', function() {
  * Main tasks
  */
 gulp.task('build:dev', function(done) {
-	runSequence('dev:tslint', 'dev:clean', 'dev:compile:sass', 'dev:copy:vendor-js', 'dev:compile:typescript', 'dev:bundle:angular', done);
+	runSequence('dev:tslint', 'dev:clean', 'dev:compile:sass', 'dev:copy:vendor-js', 'dev:compile:typescript', done);
+});
+
+gulp.task('build:dev:separate', function(done) {
+	runSequence('dev:tslint', 'dev:clean', 'dev:clean:separate', 'dev:compile:sass', 'dev:copy:vendor-js', 'dev:copy:static:separate', 'dev:compile:typescript', done);
 });
 
 gulp.task('build:prod', function(done) {
@@ -412,12 +398,17 @@ gulp.task('start:dev', function(done) {
 	runSequence('build:dev', 'serve:dev', 'watch-compile:dev', done);
 });
 
+gulp.task('start:dev:separate', function(done) {
+	useSeparateDev = true;
+	runSequence('build:dev:separate', 'serve:dev:separate', 'watch-compile:dev:separate-dev', done);
+});
+
 gulp.task('start:prod', function(done) {
 	runSequence('build:prod', 'serve:prod', done);
 });
 
 gulp.task('test:e2e', function(done) {
-	runSequence('tests:e2e:start-webdriver-phantomjs', 'tests:protractor', 'tests:e2e:stop-webdriver', done);
+	runSequence('tests:chrome', done);
 });
 
 gulp.task('default', function(done) {

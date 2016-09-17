@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AUTH_PROVIDERS } from './common/auth.guard';
 import { routing } from './routes';
-import { SharedModule } from './components/+shared/shared.module';
+import { SharedModule } from './components/_shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { ErrorModule } from './components/error/error.module';
