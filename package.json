@@ -1,6 +1,6 @@
 {
   "name": "angular2-seed",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Angular 2 TypeScript starter project",
   "author": "Matthias Schuetz",
   "dependencies": {
@@ -19,7 +19,10 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
     "event-stream": "^3.3.3",
+    "express": "^4.14.0",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",

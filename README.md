@@ -3,6 +3,8 @@ Angular 2 Seed
 
 ## Angular 2 TypeScript starter project
 
+### There is a branch which uses [Pug](https://pugjs.org/) (former Jade) templates. To use these templates, just switch to the [pug branch](https://github.com/matthias-schuetz/angular2-seed/tree/pug).
+
 This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
  - a routing concept (separate route configuration file)
