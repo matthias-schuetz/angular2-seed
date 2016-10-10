@@ -1,0 +1,47 @@
+div(class="middle")
+  div(class="row")
+    div(class="col12")
+      h2 Login
+
+  div(class="row")
+    div(class="col6")
+      p
+        | This is a sample login page. It contains a basic form with a directive for input fields. The 
+        em form-input-text
+        |  directive is bound to a 
+        a(href="https://angular.io/docs/ts/latest/api/forms/index/FormControl-class.html")
+          em FormControl
+        |  directive and provides input validation for displaying error messages.
+      p
+        | To log in, enter 
+        strong user
+        |  and 
+        strong 123
+        |  in the respective input fields. Afterwards, you will be redirected to the 
+        em dashboard
+        |  view which is a sample area for authorized users. If you try navigating to the 
+        a([routerLink]="['/dashboard']") dashboard
+        |  manually, you will be redirected to this page.
+      p
+        | The login component makes use of a service for authorization which will check credentials and save an example token in the 
+        em sessionStorage
+        | . This concept can be extended with real HTTP communication and backend authorization later.
+    div(class="col6")
+      form((ngSubmit)="onLoginFormSubmit()")
+        form-input-text(inputId="login-input-username", inputType="text", [inputControl]="loginForm.controls['username']")
+          div(label="")
+            | Username 
+            span(class="clr-epsilon") (user)
+          div(error-message="") Please enter a username
+
+        form-input-text(inputId="login-input-password", inputType="password", [inputControl]="loginForm.controls['password']")
+          div(label="")
+            | Password 
+            span(class="clr-epsilon") (123)
+          div(error-message="") Please enter a password
+
+        div(class="form-row clr-zeta", *ngIf="formState.submitError")
+          | {{ formState.submitErrorMessage }}
+
+        div(class="form-row")
+          button(type="submit", [disabled]!="!loginForm.valid || formState.submitting") Submit
