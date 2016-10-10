@@ -4,7 +4,7 @@
  * The following tasks can be used to build and serve environments for development and production.
  * There are 5 main tasks which perform the actions respectively (TSLint will perform a code check in all tasks).
  *
- * gulp                 	Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles and TypeScript/Sass on start, no compilation of TypeScript/Sass/Pug during watch task, suitable for IDEs)
+ * gulp                 	Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles and TypeScript/Sass/Pug on start, no compilation of TypeScript/Sass/Pug during watch task, suitable for IDEs)
  * gulp start:dev       	Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles, compiles TypeScript/Sass/Pug during watch task)
  * gulp start:dev:separate	Same as 'start:dev' but copies all app files into a separate dev directory (JS/CSS files will also be compiled into that directory only)
  * gulp build:dev       	Build dev environment (copies Angular 2 UMD bundles files and compiles TypeScript/Sass/Pug)

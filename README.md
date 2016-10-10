@@ -3,7 +3,9 @@ Angular 2 Seed
 
 ## Angular 2 TypeScript starter project
 
-This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
+### This branch uses [Pug](https://pugjs.org/) (former Jade) templates. For traditional HTML templates, switch to the [master branch](https://github.com/matthias-schuetz/angular2-seed/tree/master).
+
+This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp, Sass and Pug. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
  - a routing concept (separate route configuration file)
  - a lazy loading concept
@@ -14,7 +16,7 @@ This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gu
  - a pipe (determine the active route)
  - uses es6-shim, Reflect, Rx.js and Zone.js
 
-The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: JavaScript code gets minified and all JavaScript vendor libraries and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
+The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass/Pug compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass/Pug and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: JavaScript code gets minified and all JavaScript vendor libraries and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
 
 Since Angular 2 RC 5 there is support for modules. This seed makes use of modules and implements lazy loading for separate parts of the app: every view component (except the *error* view) is loaded on demand. There is a shared component called *form-input-text* which is also built up as module so it gets loaded only in those views where it's needed (in this seed, it's located in the login view). Additionally, there's a *SharedModule* which contains classes for all directives and pipes of the app: they're always loaded, no matter what's the entrypoint of the user. Keep in mind that every component you put in the *SharedModule* will always be loaded globally. If you want to lazy load components in different views, create a module for them and import that module.
 
@@ -34,18 +36,18 @@ $ npm install
 $ typings install
 ```
 
-From now on, the seed is ready to use. If you're developing in WebStorm or Visual Studio, you could just setup a new TypeScript project and compile the code via IDE. You can use Gulp to run a local web server that tracks file changes and triggers a browser reload automatically. Alternatively, you can use a certain Gulp task to start a local web server plus compile watchers for TypeScript/Sass: this task is designed for developers who like to compile all code via Gulp. The Gulp file is structured and there are 5 main tasks that do all of the jobs. TSLint has been added so all tasks include a TypeScript code check before building the app.
+From now on, the seed is ready to use. If you're developing in WebStorm or Visual Studio, you could just setup a new TypeScript project and compile the code via IDE. You can use Gulp to run a local web server that tracks file changes and triggers a browser reload automatically. Alternatively, you can use a certain Gulp task to start a local web server plus compile watchers for TypeScript/Sass/Pug: this task is designed for developers who like to compile all code via Gulp. The Gulp file is structured and there are 5 main tasks that do all of the jobs. TSLint has been added so all tasks include a TypeScript code check before building the app.
 
 ```html
 $ gulp
 
-Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle and TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
+Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle and TypeScript/Sass/Pug on start, no compilation of TypeScript/Sass/Pug during watch task, suitable for IDEs)
 ```
 
 ```html
 $ gulp start:dev
 
-Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass during watch task)
+Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass/Pug during watch task)
 ```
 
 ```html
@@ -57,7 +59,7 @@ Same as 'start:dev' but copies all app files into a separate dev directory (JS/C
 ```html
 $ gulp build:dev
 
-Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass)
+Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass/Pug)
 ```
 
 ```html
@@ -69,13 +71,13 @@ Same as 'build:dev' but copies all app files into a separate dev directory (JS/C
 ```html
 $ gulp start:prod
 
-Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass on start, no watch task, only for deployment)
+Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass/Pug on start, no watch task, only for deployment)
 ```
 
 ```html
 $ gulp build:prod
 
-Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+Build prod environment (compiles TypeScript/Sass/Pug, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
 ```
 
 ```html
