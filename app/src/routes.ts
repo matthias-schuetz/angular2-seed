@@ -1,25 +1,29 @@
 import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from './common/auth.guard';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ErrorComponent } from './components/error/error.component';
 
 export const routing = RouterModule.forRoot([
     {
         path: '',
         pathMatch: 'full',
-        loadChildren: 'src/components/home/home.module'
+        component: HomeComponent
     },
     {
         path: 'login',
-        loadChildren: 'src/components/login/login.module'
+        component: LoginComponent
     },
     {
         path: 'dashboard',
-        loadChildren: 'src/components/dashboard/dashboard.module',
+        component: DashboardComponent,
         canActivate: [AuthGuard]
     },
     {
         path: 'error',
-        loadChildren: 'src/components/error/error.module',
+        component: ErrorComponent
     },
     {
         path: '**',

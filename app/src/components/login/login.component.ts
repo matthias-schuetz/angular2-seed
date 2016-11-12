@@ -7,8 +7,9 @@ import { FormStateModel } from '../../models/form/form-state.model';
 import { LoginRequestModel } from '../../models/auth/login-request.model';
 
 @Component({
+    moduleId: module.id,
     selector: 'login',
-    templateUrl: 'src/components/login/login.component.html'
+    templateUrl: './login.component.html'
 })
 
 export class LoginComponent {

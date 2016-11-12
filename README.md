@@ -5,20 +5,23 @@ Angular 2 Seed
 
 ### There is a branch which uses [Pug](https://pugjs.org/) (former Jade) templates. To use these templates, just switch to the [pug branch](https://github.com/matthias-schuetz/angular2-seed/tree/pug).
 
+#### The new version 3.0.0 comes with major improvements and changes. Lazy loading has been removed and the production bundle consists of one "app.min.js" using Ahead-of-Time (AoT) compilation. Typings have been replaced with @types. TypeScript 2 is now being used togehter with version 3 of *gulp-typescript*. And E2E tests have been replaced with Karma unit tests and the Angular testing utilities.
+
 This is an example app based on Angular 2. It relies on TypeScript, SystemJS, Gulp and Sass. The project comes with various features you may need to build a typical single page application (SPA). Here are the most important aspects:
 
  - a routing concept (separate route configuration file)
- - a lazy loading concept
  - login and dashboard view components (authorized/public routes)
  - error page handling
  - a directive (form inputs)
  - a service (authorization)
  - a pipe (determine the active route)
- - uses es6-shim, Reflect, Rx.js and Zone.js
+ - a production bundle using Ahead-of-Time (AoT) compilation for one "app.min.js"
+ - optional Pug (former Jade) templates for HTML
+ - TSLint for integrated code checking
+ - unit/regression test sample using Karma and Angular testing utilities
+ - uses core-js, Reflect, Rx.js and Zone.js
 
-The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for the creation of the **Angular 2 bundle** and copying polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: JavaScript code gets minified and all JavaScript vendor libraries and CSS code will be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
-
-Since Angular 2 RC 5 there is support for modules. This seed makes use of modules and implements lazy loading for separate parts of the app: every view component (except the *error* view) is loaded on demand. There is a shared component called *form-input-text* which is also built up as module so it gets loaded only in those views where it's needed (in this seed, it's located in the login view). Additionally, there's a *SharedModule* which contains classes for all directives and pipes of the app: they're always loaded, no matter what's the entrypoint of the user. Keep in mind that every component you put in the *SharedModule* will always be loaded globally. If you want to lazy load components in different views, create a module for them and import that module.
+The project was developed with an IDE in mind so the Gulp configuration works well with or without an editor that has integrated TypeScript/Sass compilation (like WebStorm or Visual Studio). Gulp is mandatory for copying Angular 2 and polyfills so you don't need to link to modules from *node_modules* inside your web app. Gulp can be used for compiling TypeScript/Sass and runnig a local web server with file watchers. There are also Gulp tasks for deploying a production environment: all JavaScript code gets bundled and minified into one final "app.min.js" using Ahead-of-Time (AoT) compilation and tree shaking (Rollup). CSS code will also be concatenated into a single file. The *index.html* contains a minimal pre-processing condition for production.
 
 ![Angular 2 Seed](http://matthias-schuetz.github.io/angular2-seed/angular2-seed.png?1 "Angular 2 Seed")
 
@@ -28,10 +31,9 @@ There is an online demo [available here](http://matthiasschuetz.com/angular2-see
 
 ## Usage
 
-To use the Angular 2 seed, just clone this respository to your desktop. You need Node.js and npm to be installed. You also need [Typings](https://github.com/typings/typings) to be installed globally. Afterwards, run the following commands to install all dependencies.
+To use the Angular 2 seed, just clone this respository to your desktop. You need Node.js and npm to be installed. Afterwards, run the following commands to install all dependencies.
 
 ```html
-$ npm install typings -g
 $ npm install
 $ typings install
 ```
@@ -41,13 +43,13 @@ From now on, the seed is ready to use. If you're developing in WebStorm or Visua
 ```html
 $ gulp
 
-Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle and TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
+Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles and compiles TypeScript/Sass on start, no compilation of TypeScript/Sass during watch task, suitable for IDEs)
 ```
 
 ```html
 $ gulp start:dev
 
-Build/serve/watch dev environment on port 8080 (builds Angular 2 bundle, compiles TypeScript/Sass during watch task)
+Build/serve/watch dev environment on port 8080 (copies Angular 2 UMD bundles, compiles TypeScript/Sass during watch task)
 ```
 
 ```html
@@ -59,7 +61,7 @@ Same as 'start:dev' but copies all app files into a separate dev directory (JS/C
 ```html
 $ gulp build:dev
 
-Build dev environment (builds Angular 2 bundle and compiles TypeScript/Sass)
+Build dev environment (copies Angular 2 UMD bundles files and compiles TypeScript/Sass)
 ```
 
 ```html
@@ -71,19 +73,19 @@ Same as 'build:dev' but copies all app files into a separate dev directory (JS/C
 ```html
 $ gulp start:prod
 
-Build/serve prod environment on port 8081 (builds Angular 2 bundle and TypeScript/Sass on start, no watch task, only for deployment)
+Build/serve prod environment on port 8081 (compiles app into one "app.min.js" file, copies CSS/static files, no watch task, only for deployment)
 ```
 
 ```html
 $ gulp build:prod
 
-Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one file, bundles CSS into one file and copies static files into dist/ folder)
+Build prod environment (compiles TypeScript/Sass, processes index.html, bundles vendor and Angular 2 JS files into one "app.min.js" file, bundles CSS into one file and copies static files into dist/ folder)
 ```
 
 ```html
-$ gulp test:e2e
+$ gulp test:unit
 
-Runs all E2E tests (assumes that dev server is running on port 8080, which is set as 'baseUrl' in protractor.conf)
+Runs Karma unit tests based on the Angular testing utilities
 ```
 
 All Gulp tasks are also documented at the top of the *gulpfile.js*.
@@ -129,14 +131,17 @@ The included web server sets up the *app/* directory as *root* path so everythin
   ├ assets/
   ├ src/
   ├ styles/
+  ├ dist.body.html
   ├ dist.head.html
   ├ index.html
   └ system.conf.js
 ├ node_modules/
-├ typings/
+├ aot-rollup-config.js
 ├ gulpfile.js
-├ protractor.conf.js
+├ karma.conf.js
+├ karma-test-shim.js
 ├ tsconfig.json
+├ tsconfig-aot.json
 ├ tslint.json
 └ typings.json
 ```
@@ -148,3 +153,4 @@ The Angular 2 seed runs on all major browsers including Internet Explorer 11+, E
 ## License
 
 The Angular 2 seed is released under the MIT license.
+

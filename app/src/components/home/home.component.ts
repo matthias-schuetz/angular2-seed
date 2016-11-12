@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'home',
-    templateUrl: 'src/components/home/home.component.html',
-    styleUrls: ['styles/components/home.css']
+    templateUrl: './home.component.html',
+    styleUrls: ['../../../styles/components/home.css']
 })
 
 export class HomeComponent {
