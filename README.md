@@ -35,7 +35,6 @@ To use the Angular 2 seed, just clone this respository to your desktop. You need
 
 ```html
 $ npm install
-$ typings install
 ```
 
 From now on, the seed is ready to use. If you're developing in WebStorm or Visual Studio, you could just setup a new TypeScript project and compile the code via IDE. You can use Gulp to run a local web server that tracks file changes and triggers a browser reload automatically. Alternatively, you can use a certain Gulp task to start a local web server plus compile watchers for TypeScript/Sass: this task is designed for developers who like to compile all code via Gulp. The Gulp file is structured and there are 5 main tasks that do all of the jobs. TSLint has been added so all tasks include a TypeScript code check before building the app.
@@ -143,7 +142,6 @@ The included web server sets up the *app/* directory as *root* path so everythin
 ├ tsconfig.json
 ├ tsconfig-aot.json
 ├ tslint.json
-└ typings.json
 ```
 
 ## Browser support
