@@ -141,7 +141,7 @@ The included web server sets up the *app/* directory as *root* path so everythin
 ├ karma-test-shim.js
 ├ tsconfig.json
 ├ tsconfig-aot.json
-├ tslint.json
+└ tslint.json
 ```
 
 ## Browser support
