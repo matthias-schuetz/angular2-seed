@@ -27,7 +27,7 @@ The project was developed with an IDE in mind so the Gulp configuration works we
 
 ## Demo
 
-There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled production version of the project which uses SystemJS and Angular 2.
+There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled production version of the project which consists of only one *app.min.js* file.
 
 ## Usage
 
