@@ -1,0 +1,31 @@
+
+<div class="middle">
+  <div class="row">
+    <div class="col12">
+      <h2>Login</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col6">
+      <p>This is a sample login page. It contains a basic form with a directive for input fields. The <em>form-input-text</em> directive is bound to a <a href="https://angular.io/docs/ts/latest/api/forms/index/FormControl-class.html"><em>FormControl</em></a> directive and provides input validation for displaying error messages.</p>
+      <p>To log in, enter <strong>user</strong> and <strong>123</strong> in the respective input fields. Afterwards, you will be redirected to the <em>dashboard</em> view which is a sample area for authorized users. If you try navigating to the <a [routerLink]="['/dashboard']">dashboard</a> manually, you will be redirected to this page.</p>
+      <p>The login component makes use of a service for authorization which will check credentials and save an example token in the <em>sessionStorage</em>. This concept can be extended with real HTTP communication and backend authorization later.</p>
+    </div>
+    <div class="col6">
+      <form (ngSubmit)="onLoginFormSubmit()">
+        <form-input-text inputId="login-input-username" inputType="text" [inputControl]="loginForm.controls['username']">
+          <div label="">Username <span class="clr-epsilon">(user)</span></div>
+          <div error-message="">Please enter a username</div>
+        </form-input-text>
+        <form-input-text inputId="login-input-password" inputType="password" [inputControl]="loginForm.controls['password']">
+          <div label="">Password <span class="clr-epsilon">(123)</span></div>
+          <div error-message="">Please enter a password</div>
+        </form-input-text>
+        <div class="form-row clr-zeta" *ngIf="formState.submitError">{{ formState.submitErrorMessage }}</div>
+        <div class="form-row">
+          <button type="submit" [disabled]="!loginForm.valid || formState.submitting">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

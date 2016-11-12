@@ -2,8 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
+    moduleId: module.id,
     selector: 'form-input-text',
-    templateUrl: 'src/components/_shared/form-input-text/form-input-text.component.html'
+    templateUrl: './form-input-text.component.html'
 })
 
 export class FormInputTextComponent {

@@ -1,0 +1,10 @@
+
+<div class="form-row">
+  <label [attr.for]="inputId">
+    <ng-content select="[label]"></ng-content>
+  </label>
+  <input [id]="inputId" [type]="inputType" autocomplete="off" spellcheck="false" [formControl]="inputControl" #input="ngForm"/>
+  <div class="row retain form-info bgd-alpha clr-zeta" *ngIf="!input.valid && !input.pristine">
+    <ng-content select="[error-message]"></ng-content>
+  </div>
+</div>

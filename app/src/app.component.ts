@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'app',
-    templateUrl: 'src/app.component.html',
-    styleUrls: ['styles/components/app.css']
+    templateUrl: './app.component.html',
+    styleUrls: ['../styles/components/app.css']
 })
 
 export class AppComponent {
