@@ -1,11 +1,13 @@
 {
   "name": "angular2-seed",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Angular 2 TypeScript starter project",
   "author": "Matthias Schuetz",
   "scripts": {
-    "aot": "node_modules/.bin/ngc -p tsconfig-aot.json",
-    "aot-rollup": "node_modules/.bin/rollup -c aot-rollup-config.js"
+    "aot": "node node_modules/.bin/ngc -p tsconfig-aot.json",
+    "aot-win": "node_modules/.bin/ngc -p tsconfig-aot.json",
+    "aot-rollup": "node node_modules/.bin/rollup -c aot-rollup-config.js",
+    "aot-rollup-win": "node_modules/.bin/rollup -c aot-rollup-config.js"
   },
   "dependencies": {
     "@angular/common": "~2.1.2",
