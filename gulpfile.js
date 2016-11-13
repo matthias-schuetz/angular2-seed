@@ -28,7 +28,6 @@ var pug = require('gulp-pug');
 var replace = require('gulp-replace');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
-var SystemJsBuilder = require('systemjs-builder');
 var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 var watch = require('gulp-watch');
@@ -145,31 +144,6 @@ var paths = {
 
 		serverRoot: './dist',
 		serverFallback: './dist/index.html'
-	}
-};
-
-var systemjsConfig = {
-	baseURL: './',
-	defaultJSExtensions: true,
-	paths: {
-		'*': 'node_modules/*',
-		'app/*': 'app/*'
-	},
-	map: {
-		'@angular/core': './node_modules/@angular/core/bundles/core.umd.js',
-		'@angular/common': './node_modules/@angular/common/bundles/common.umd.js',
-		'@angular/compiler': './node_modules/@angular/compiler/bundles/compiler.umd.js',
-		'@angular/forms': './node_modules/@angular/forms/bundles/forms.umd.js',
-		'@angular/http': './node_modules/@angular/http/bundles/http.umd.js',
-		'@angular/platform-browser': './node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
-		'@angular/platform-browser-dynamic': './node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-		'@angular/router': './node_modules/@angular/router/bundles/router.umd.js',
-		'rxjs': './rxjs'
-	},
-	packages: {
-		'rxjs': {
-			defaultExtension: 'js'
-		}
 	}
 };
 
@@ -318,15 +292,6 @@ gulp.task('prod:preprocess:html', function() {
 gulp.task('reload:dev', function() {
 	return gulp.src(paths.dev.serverRoot)
 		.pipe(connect.reload());
-});
-
-gulp.task('serve:aot', function() {
-	connect.server({
-		port: '8080',
-		root: './aot/app',
-		fallback: './aot/app/index.html',
-		livereload: true
-	});
 });
 
 gulp.task('serve:dev', function() {

@@ -1,6 +1,6 @@
 {
   "name": "angular2-seed",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Angular 2 TypeScript starter project",
   "author": "Matthias Schuetz",
   "scripts": {
@@ -56,7 +56,6 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1",
     "run-sequence": "^1.1.5",
-    "systemjs-builder": "^0.15.31",
     "tslint": "^3.11.0",
     "typescript": "^2.0.2",
     "typings": "^0.8.1"

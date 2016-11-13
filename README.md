@@ -91,7 +91,7 @@ All Gulp tasks are also documented at the top of the *gulpfile.js*.
 
 ## Gulp configuration
 
-Gulp is used to execute various tasks and if you don't want to use it for compilation, you'll need it at least for building the Angular 2 bundle and a production bundle of your app. All Gulp tasks are based on configuration settings that are specified at the top of the *gulpfile.js*. You can adjust all path and file settings here, including the SystemJS configuration which builds the Angular 2 bundle using the [SystemJS Build Tool](https://www.npmjs.com/package/systemjs-builder). Here's an extract of the Gulp configuration.
+Gulp is used to execute various tasks and if you don't want to use it for compilation, you'll need it at least for copying the Angular 2 files and creating a production bundle of your app. All Gulp tasks are based on configuration settings that are specified at the top of the *gulpfile.js*. You can adjust all path and file settings here. Here's an extract of the Gulp configuration.
 
 ```javascript
 var paths = {
@@ -109,21 +109,13 @@ var paths = {
 	dev: {...},
 	prod: {...}
 };
-
-var systemjsConfig = {
-	baseURL: './',
-	defaultJSExtensions: true,
-	paths: {...},
-	map: {...},
-	packages: {...}
-};
 ```
 
 ## File structure
 
 The seed was developed with simplicity in mind, web apps get complex soon enough. The project was designed in a way that there aren't any copy tasks. So when developing, you only work inside the *app/* directory. TypeScript and Sass files will be compiled into their respective folder locations beside the TS and SCSS files. The Sass structure was inspired by the [7-1 architecture pattern](https://github.com/HugoGiraudel/sass-boilerplate) and inside the *app/styles/* directory, you'll also find Angular component styles. These files won't be included in the main *app.css* since they're referenced in the respective Angular components.
 
-The included web server sets up the *app/* directory as *root* path so everything starts from here during development. The Angular 2 bundle and necessary polyfills (like es6-shim, Reflect, Rx.js and Zone.js) are compiled/copied into the *app/src/vendor/node_modules/* directory. So everything is accessible inside the *app/* folder. If you run one of the production tasks like "gulp start:prod", a *dist/* directory will be created on the root level. This directory contains a minified *app.js* file with all JavaScript code and an *app.css*. Beware that existing component CSS files will be copied to *dist/styles/components/* since they are used by the Angular components directly. Here's a short extract of the file structure to get a final picture.
+The included web server sets up the *app/* directory as *root* path so everything starts from here during development. The Angular 2 UMD bundles and necessary polyfills (like core-js, Reflect, Rx.js and Zone.js) are copied into the *app/src/vendor/node_modules/* directory. So everything is accessible inside the *app/* folder. If you run one of the production tasks like "gulp start:prod", a *dist/* directory will be created on the root level. This directory contains a minified *app.min.js* file with all JavaScript code and an *app.css*. Here's a short extract of the file structure to get a final picture.
 
 ```html
 ├ app/
