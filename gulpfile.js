@@ -386,7 +386,7 @@ gulp.task('build:dev:separate', function(done) {
 });
 
 gulp.task('build:prod', function(done) {
-	runSequence('dev:tslint', 'prod:clean', 'prod:compile:sass', 'dev:compile:pug', 'dev:compile:typescript', 'prod:compile:aot', 'prod:bundle:js', 'prod:bundle:vendor-css', 'prod:preprocess:html', 'prod:copy:static', 'prod:clean:post', done);
+	runSequence('dev:tslint', 'prod:clean', 'dev:compile:sass', 'prod:compile:sass', 'dev:compile:pug', 'dev:compile:typescript', 'prod:compile:aot', 'prod:bundle:js', 'prod:bundle:vendor-css', 'prod:preprocess:html', 'prod:copy:static', 'prod:clean:post', done);
 });
 
 gulp.task('start:dev', function(done) {
