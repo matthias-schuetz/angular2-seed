@@ -286,7 +286,7 @@ gulp.task('prod:clean:post', function(done) {
 });
 
 gulp.task('prod:compile:aot', function(done) {
-	exec('npm run aot && npm run aot-rollup', function(err, stdout, stderr) {
+	exec('npm run aot || npm run aot-win && npm run aot-rollup || npm run aot-rollup-win', function(err) {
 		if (err) {
 			console.log(err);
 		}
