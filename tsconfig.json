@@ -13,6 +13,10 @@
     ]
   },
   "compileOnSave": true,
+  "include" : [
+    "./app/src/**/*.ts",
+    "./typings/**/*.ts"
+  ],
   "exclude": [
     "node_modules",
     "app/src/vendor/node_modules",
