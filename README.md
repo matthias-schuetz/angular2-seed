@@ -25,10 +25,6 @@ The project was developed with an IDE in mind so the Gulp configuration works we
 
 ![Angular 2 Seed](http://matthias-schuetz.github.io/angular2-seed/angular2-seed.png?1 "Angular 2 Seed")
 
-## Demo
-
-There is an online demo [available here](http://matthiasschuetz.com/angular2-seed). This represents the compiled production version of the project which consists of only one *app.min.js* file.
-
 ## Usage
 
 To use the Angular 2 seed, just clone this respository to your desktop. You need Node.js and npm to be installed. Afterwards, run the following commands to install all dependencies.
